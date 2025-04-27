@@ -1,0 +1,99 @@
+//MyService.java
+
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface Myservice extends Remote{
+    public double add(double a, double b) throws RemoteException;
+    public double subtract(double a, double b) throws RemoteException;
+    public double multiply(double a, double b) throws RemoteException;
+    public double divide(double a, double b) throws RemoteException;
+}
+
+
+// MyServiceImpl.java
+
+import java.rmi.*;
+import java.rmi.server.*;
+import java.rmi.registry.*;
+
+public class MyServiceImpl extends UnicastRemoteObject implements MyService{
+    public MyServiceImpl() throws RemoteException{
+        super();
+    }
+    
+    public double add(double a, double b) throws RemoteException{
+        return a+b;
+    }
+    public double subtract(double a, double b) throws RemoteException{
+        return a - b;
+    }
+    public double multiply(double a, double b) throws RemoteException{
+        return a*b;
+    }
+    public double divide(double a, double b) throws RemoteException{
+        if(b == 0){
+            throw ArithmeticException("Division by 0 is not allowed");
+        }
+        else{
+            return a/b;
+        }
+    }
+
+    public static void main(String[] args){
+        try{
+            MyServiceImpl service = new MyServiceImpl();
+
+            LocateRegistry.createRegistry(1099);
+
+            Naming.rebind("rmi://Localhost/MyService", service);
+            System.out.println("Server is ready.");
+        } 
+        catch(RemoteException e){
+            System.err.println("RMI Server Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}
+
+
+//Clint.java
+
+import java.rmi.*; 
+import java.util.*; 
+ 
+public class Client{ 
+    public static void main (String args[]) 
+    { 
+        Scanner sc = new Scanner(System.in); 
+ 
+        try{ 
+ 
+            String serverURL = "rmi://localhost/MyService"; 
+            MyService serverintf = (MyService) Naming.lookup(serverURL); 
+ 
+            System.out.println("Enter First Number: "); 
+            double num1 = sc.nextDouble(); 
+            System.out.println("Enter Second Number: "); 
+            double num2 = sc.nextDouble(); 
+ 
+            System.out.println("First number is: " + a); 
+            System.out.println("Second number is: " + b); 
+ 
+            System.out.println("Results: "); 
+            System.out.println("Addition is: " + serverintf.add(a,b)); 
+            System.out.println("Subtraction is: " + serverintf.subtract(a,b)); 
+            System.out.println("Multiplication is: " + serverintf.multipliy(a,b)); 
+            System.out.println("Division is: " + serverintf.Division(a,b)); 
+        } 
+        catch(Exception e){ 
+            System.out.println("Exception occurred at Client! " +e.getMessage()); 
+        }        
+    } 
+} 
+ 
