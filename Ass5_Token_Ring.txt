@@ -38,3 +38,18 @@ public class TokenRing
         scanner.close(); 
     } 
 } 
+
+
+
+/*Enter the number of nodes: 10
+Enter sender node: 7
+Enter receiver node: 3
+Enter data to send: 55
+Token passing sequence: 7 -> 8 -> 9 -> 0 -> 1 -> 2 -> 3
+Sender 7 sending data: 55
+Data 55 forwarded by node 8
+Data 55 forwarded by node 9
+Data 55 forwarded by node 0
+Data 55 forwarded by node 1
+Data 55 forwarded by node 2
+Receiver 3 received data: 55*/
