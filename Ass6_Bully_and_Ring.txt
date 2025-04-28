@@ -1,5 +1,5 @@
 //Bully.java 
- 
+
 import java.util.Scanner; 
  
 public class Bully  
@@ -97,80 +97,78 @@ public class Bully
             } 
         } 
     } 
+} 
+
+
+
+//Ring.java
+import java.util.Scanner;
+
+class Process {
+    int id;
+    boolean active;
+
+    Process(int id) {
+        this.id = id;
+        this.active = true;
+    }
 }
 
+public class Ring {
+    static Process[] processes;
+    static int n;
 
-//Ring.java 
- 
-import java.util.Scanner; 
- 
-class Process { 
-    int id; 
-    boolean active; 
- 
-    Process(int id) { 
-        this.id = id; 
-        this.active = true; 
-    } 
-} 
- 
-public class Ring { 
-    static Process[] processes; 
-    static int n; 
- 
-    public static void main(String[] args) { 
-        Scanner in = new Scanner(System.in); 
- 
-        // Step 1: Initialize Processes 
-        System.out.print("Enter number of processes: "); 
-        n = in.nextInt(); 
-        processes = new Process[n]; 
- 
-        System.out.println("Enter process IDs:"); 
-        for (int i = 0; i < n; i++) { 
-            processes[i] = new Process(in.nextInt()); 
-        } 
- 
-        int choice; 
-        do { 
-            System.out.println("\nMENU:"); 
-            System.out.println("1. Start Election"); 
-            System.out.println("2. Exit"); 
-            System.out.print("Enter your choice: "); 
-            choice = in.nextInt(); 
- 
-            switch (choice) { 
-                case 1: 
-                    System.out.print("Enter process index (0-" + (n - 1) + ") to start election: "); 
-                    int initiator = in.nextInt(); 
-                    startElection(initiator); 
-                    break; 
-                case 2: 
-                    System.out.println("Exiting..."); 
-                    break; 
-                default: 
-                    System.out.println("Invalid choice! Try again."); 
-                } while (choice != 2); 
- 
-                in.close(); 
-            } 
-         
-            static void startElection(int initiator) { 
-                int coordinator = -1; 
-                System.out.println("\nElection started by Process " + processes[initiator].id); 
-         
-                int i = initiator; 
-                do { 
-                    int next = (i + 1) % n; // Move to the next process in the ring 
-                    if (processes[next].active) { 
-                        System.out.println("Process " + processes[i].id + " sends message to Process " + 
-        processes[next].id); 
-                        coordinator = Math.max(coordinator, processes[next].id); 
-                    } 
-                    i = next; 
-                } while (i != initiator); // Complete one full cycle 
-         
-                System.out.println("\nProcess " + coordinator + " is elected as Coordinator."); 
-            } 
-    } 
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter number of processes: ");
+        n = in.nextInt();
+        processes = new Process[n];
+
+        System.out.println("Enter process IDs:");
+        for (int i = 0; i < n; i++) {
+            processes[i] = new Process(in.nextInt());
+        }
+
+        int choice;
+        do {
+            System.out.println("\nMENU:");
+            System.out.println("1. Start Election");
+            System.out.println("2. Exit");
+            System.out.print("Enter your choice: ");
+            choice = in.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter process index (0-" + (n - 1) + ") to start election: ");
+                    int initiator = in.nextInt();
+                    startElection(initiator);
+                    break;
+                case 2:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Try again.");
+            }
+        } while (choice != 2);
+
+        in.close();
+    }
+
+    static void startElection(int initiator) {
+        int coordinator = -1;
+        System.out.println("\nElection started by Process " + processes[initiator].id);
+
+        int i = initiator;
+        do {
+            int next = (i + 1) % n; // Move to the next process in the ring
+            if (processes[next].active) {
+                System.out.println("Process " + processes[i].id + " sends message to Process " + processes[next].id);
+                coordinator = Math.max(coordinator, processes[next].id);
+            }
+            i = next;
+        } while (i != initiator); // Complete one full cycle
+
+        System.out.println("\nProcess " + coordinator + " is elected as Coordinator.");
+    }
 }
